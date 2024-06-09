@@ -1,0 +1,62 @@
+.item-list {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 5px;
+  }
+  
+  .create-link:hover {
+    background-color: #218838;
+  }
+  
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .item-name {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .item-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .edit-link,
+  .view-link {
+    padding: 5px 10px;
+    border-radius: 3px;
+  }
+  
+  .edit-link {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .edit-link:hover {
+    background-color: #0056b3;
+  }
+  
+  .view-link {
+    background-color: #ffc107;
+    color: #212529;
+  }
+  
+  .view-link:hover {
+    background-color: #e0a800;
+  }
+  
