@@ -1,51 +1,29 @@
 # SofTest
 
-    node-app/
+    back/
     │
     ├── config/
-    │   ├── dev.env
-    │   ├── release.env
-    │   └── prod.env
-    │
     ├── controllers/
-    │   └── itemController.js
-    │
     ├── models/
-    │   └── itemModel.js
-    │
     ├── routes/
-    │   └── itemRoutes.js
-    │
     ├── tests/
-    │   └── (test files)
-    │
+    ├── .env                *gitignore*
+    ├── .env.development    *gitignore*
+    ├── .env.production     *gitignore*
+    ├── .env.release        *gitignore*
     ├── .gitignore
     ├── app.js
     ├── package.json
     └── README.md
 
-    react-app/
+    front/
     │
     ├── public/
-    │   ├── index.html
-    │   └── (other public assets)
-    │
     ├── src/
     │   ├── components/
-    │   │   ├── Home.js
     │   │   ├── Item/
-    │   │   │   ├── ItemCreate.js
-    │   │   │   ├── ItemEdit.js
-    │   │   │   ├── ItemList.js
-    │   │   │   └── ItemView.js
-    │   │   └── (other components)
-    │   │
     │   ├── services/
-    │   │   └── ItemService.js
-    │   │
     │   ├── App.js
     │   ├── index.js
-    │   └── (other React-related files)
-    │
     ├── package.json
     └── README.md
