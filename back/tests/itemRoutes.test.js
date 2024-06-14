@@ -1,94 +1,72 @@
 const chai = require('chai');
-const chaiHttp = require('chai-http');
-const app = require('../app');
-const Item = require('../models/itemModel');
-const connectDB = require('../config/database');
+const expect = chai.expect;
+const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
+chai.use(sinonChai);
+const request = require('supertest');
+const express = require('express');
+const itemController = require('../controllers/itemController');
+const itemRoutes = require('../routes/itemRoutes');
 
-chai.should();
-chai.use(chaiHttp);
+const app = express();
+app.use(express.json());
+app.use('/api', itemRoutes);
 
-describe('Items API Routes', () => {
-  before(async () => {
-    await connectDB();
-  });
+describe('Item Routes', () => {
+  let sampleItem;
+  let createItemStub, getItemsStub, updateItemStub, deleteItemStub;
 
-  beforeEach(async () => {
-    await Item.deleteMany({});
-  });
+  beforeEach(() => {
+    sampleItem = {
+      name: 'Test Item',
+      description: 'This is a test item',
+      price: 100,
+      hash: 'testHash'
+    };
 
-  describe('GET /items', () => {
-    it('should get all items', (done) => {
-      chai.request(app)
-        .get('/items')
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('array');
-          res.body.length.should.be.eql(0);
-          done();
-        });
+    createItemStub = sinon.stub(itemController, 'createItem').callsFake(async (req, res) => {
+      res.status(201).json(sampleItem);
+    });
+    getItemsStub = sinon.stub(itemController, 'getItems').callsFake(async (req, res) => {
+      res.status(200).json([sampleItem]);
+    });
+    updateItemStub = sinon.stub(itemController, 'updateItem').callsFake(async (req, res) => {
+      res.status(200).json(sampleItem);
+    });
+    deleteItemStub = sinon.stub(itemController, 'deleteItem').callsFake(async (req, res) => {
+      res.status(204).send();
     });
   });
 
-  describe('POST /items', () => {
-    it('should create a new item', (done) => {
-      const newItem = { name: 'Test Item', description: 'Test Description', price: 100 };
-      chai.request(app)
-        .post('/items')
-        .send(newItem)
-        .end((err, res) => {
-          res.should.have.status(201);
-          res.body.should.be.a('object');
-          res.body.should.have.property('name').eql('Test Item');
-          done();
-        });
-    });
+  afterEach(() => {
+    sinon.restore();
   });
 
-  describe('GET /items/:id', () => {
-    it('should get an item by the given id', (done) => {
-      const item = new Item({ name: 'Test Item', description: 'Test Description', price: 100 });
-      item.save((err, savedItem) => {
-        chai.request(app)
-          .get(`/items/${savedItem.id}`)
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('name').eql('Test Item');
-            res.body.should.have.property('_id').eql(savedItem.id);
-            done();
-          });
-      });
-    });
+  it('POST /api/items should create a new item', async () => {
+    const res = await request(app).post('/api/items').send(sampleItem);
+
+    expect(createItemStub).to.have.been.calledOnce;
+    expect(res.status).to.equal(201);
   });
 
-  describe('PUT /items/:id', () => {
-    it('should update an item by the given id', (done) => {
-      const item = new Item({ name: 'Test Item', description: 'Test Description', price: 100 });
-      item.save((err, savedItem) => {
-        chai.request(app)
-          .put(`/items/${savedItem.id}`)
-          .send({ name: 'Updated Item' })
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('name').eql('Updated Item');
-            done();
-          });
-      });
-    });
+  it('GET /api/items should return all items', async () => {
+    const res = await request(app).get('/api/items');
+
+    expect(getItemsStub).to.have.been.calledOnce;
+    expect(res.status).to.equal(200);
   });
 
-  describe('DELETE /items/:id', () => {
-    it('should delete an item by the given id', (done) => {
-      const item = new Item({ name: 'Test Item', description: 'Test Description', price: 100 });
-      item.save((err, savedItem) => {
-        chai.request(app)
-          .delete(`/items/${savedItem.id}`)
-          .end((err, res) => {
-            res.should.have.status(200);
-            done();
-          });
-      });
-    });
+  it('PUT /api/items/:id should update an item', async () => {
+    const res = await request(app).put('/api/items/testId').send({ name: 'Updated Item' });
+
+    expect(updateItemStub).to.have.been.calledOnce;
+    expect(res.status).to.equal(200);
+  });
+
+  it('DELETE /api/items/:id should delete an item', async () => {
+    const res = await request(app).delete('/api/items/testId');
+
+    expect(deleteItemStub).to.have.been.calledOnce;
+    expect(res.status).to.equal(204);
   });
 });

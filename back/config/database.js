@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+const env = process.env.NODE_ENV || 'development';
 dotenv.config({
-    path: `.env.${process.env.NODE_ENV || 'development'}`
+    path: `.env.${env}`
 });
 
 const connectDB = async () => {
@@ -11,7 +12,7 @@ const connectDB = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        console.log('MongoDB connected');
+        console.log(`MongoDB connected in ${env} environment`);
     } catch (error) {
         console.error('MongoDB connection error:', error);
         process.exit(1);

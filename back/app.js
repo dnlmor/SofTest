@@ -1,20 +1,22 @@
 const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/database');
+const mongoose = require('mongoose');
+const config = require('./config/database');
 const itemRoutes = require('./routes/itemRoutes');
 
 const app = express();
+const port = config.port;
 
-app.use(cors());
 app.use(express.json());
 
-connectDB();
+// Database connection
+mongoose.connect(config.db, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log(`Connected to ${config.db}`))
+  .catch(err => console.error(`Could not connect to ${config.db}`, err));
 
-app.use('/items', itemRoutes);
+app.use('/api', itemRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
 
-module.exports = app; 
+module.exports = app;
