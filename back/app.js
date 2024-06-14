@@ -1,16 +1,20 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
+const connectDB = require('./config/database');
 const itemRoutes = require('./routes/itemRoutes');
 
-app.use(cors()); // Enable CORS for all routes
-app.use(express.json()); // Parse JSON requests
+const app = express();
 
-// Routes
-app.use('/api/items', itemRoutes);
+app.use(cors());
+app.use(express.json());
 
-// Start the server
+connectDB();
+
+app.use('/items', itemRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app; 

@@ -1,9 +1,14 @@
 const chai = require('chai');
 const Item = require('../models/itemModel');
+const connectDB = require('../config/database');
 
 chai.should();
 
 describe('Item Model', () => {
+  before(async () => {
+    await connectDB();
+  });
+
   it('should create a new item', (done) => {
     const item = new Item({ name: 'Test Item', description: 'Test Description', price: 100 });
     item.save((err, savedItem) => {
@@ -15,5 +20,11 @@ describe('Item Model', () => {
     });
   });
 
-  // Add more tests for other model operations
+  it('should not save an item without name field', (done) => {
+    const item = new Item({ description: 'Test Description', price: 100 });
+    item.save((err) => {
+      err.should.exist;
+      done();
+    });
+  });
 });
