@@ -14,6 +14,10 @@ const dishSchema = new mongoose.Schema({
     required: true,
     validate: [arrayLimit, '{PATH} cannot be empty']
   },
+  stock: {
+    type: Number,
+    default: 0,
+  },
 });
 
 function arrayLimit(val) {
