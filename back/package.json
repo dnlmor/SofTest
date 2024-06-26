@@ -1,35 +1,29 @@
 {
-  "name": "back",
+  "name": "backend",
   "version": "1.0.0",
+  "description": "Backend service for restaurant dish CRUD operations",
   "main": "app.js",
-  "directories": {
-    "test": "tests"
-  },
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
-    "test": "mocha tests/**/*.test.js",
-    "test:watch": "mocha --watch tests/**/*.test.js",
-    "lint": "eslint ."
+    "test": "mocha ./tests/*.test.js --timeout 10000"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "mongoose": "^6.7.0",
-    "nanoid": "^5.0.7",
-    "sinon-chai": "^3.7.0"
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^6.2.2",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
-    "chai": "^4.4.1",
-    "chai-http": "^4.4.0",
-    "eslint": "^8.23.0",
-    "mocha": "^10.4.0",
-    "nodemon": "^2.0.20",
-    "rewire": "^7.0.0",
-    "sinon": "^18.0.0",
-    "supertest": "^6.2.4"
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.4.0",
+    "rewire": "^5.0.0",
+    "sinon": "^9.2.4"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "node .husky/commit-msg"
+    }
   }
 }

@@ -1,22 +1,32 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const config = require('./config/database');
-const itemRoutes = require('./routes/itemRoutes');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const connectDB = require('./config/database');
+const dishRoutes = require('./routes/dishRoutes');
+const { PORT } = require('./config/config');
 
+// Connect to MongoDB
+connectDB();
+
+// Initialize Express
 const app = express();
-const port = config.port;
 
-app.use(express.json());
+// Middleware
+app.use(bodyParser.json());
+app.use(cors());
 
-// Database connection
-mongoose.connect(config.db, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log(`Connected to ${config.db}`))
-  .catch(err => console.error(`Could not connect to ${config.db}`, err));
+// Routes
+app.use('/api/dishes', dishRoutes);
 
-app.use('/api', itemRoutes);
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 module.exports = app;
