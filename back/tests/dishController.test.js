@@ -15,7 +15,7 @@ describe('Dish Controller', () => {
   describe('createDish', () => {
     it('should create a new dish', async () => {
       const req = {
-        body: { name: 'Ramen', price: 12.99, ingredients: ['Noodles', 'Broth'], stock: 50 },
+        body: { name: 'Kebab', price: 9.99, ingredients: ['Bread', 'Donner'], stock: 4696 },
       };
       const res = {
         status: sinon.stub().returnsThis(),
@@ -32,7 +32,7 @@ describe('Dish Controller', () => {
 
     it('should handle errors when creating a dish', async () => {
       const req = {
-        body: { name: 'Ramen', price: 12.99, ingredients: ['Noodles', 'Broth'], stock: 50 },
+        body: { name: 'Kebab', price: 9.99, ingredients: ['Bread', 'Donner'], stock: 4696 },
       };
       const res = {
         status: sinon.stub().returnsThis(),
@@ -59,6 +59,7 @@ describe('Dish Controller', () => {
       const dishes = [
         { name: 'Ramen', price: 12.99, ingredients: ['Noodles', 'Broth'], stock: 50 },
         { name: 'Pho', price: 11.99, ingredients: ['Rice noodles', 'Beef broth'], stock: 30 },
+        { name: 'Kebab', price: 9.99, ingredients: ['Bread', 'Donner'], stock: 4696 }
       ];
 
       sandbox.stub(Dish, 'find').resolves(dishes);
@@ -93,7 +94,7 @@ describe('Dish Controller', () => {
         status: sinon.stub().returnsThis(),
         json: sinon.stub(),
       };
-      const dish = { name: 'Ramen', price: 12.99, ingredients: ['Noodles', 'Broth'], stock: 50 };
+      const dish = { name: 'Kebab', price: 9.99, ingredients: ['Bread', 'Donner'], stock: 4696 };
 
       sandbox.stub(Dish, 'findById').resolves(dish);
 
@@ -142,7 +143,7 @@ describe('Dish Controller', () => {
         status: sinon.stub().returnsThis(),
         json: sinon.stub(),
       };
-      const updatedDish = { name: 'Ramen', price: 14.99, ingredients: ['Noodles', 'Broth'], stock: 30 };
+      const updatedDish = { name: 'Kebab', price: 11.99, ingredients: ['Bread', 'Salmon'], stock: 2104 };
 
       sandbox.stub(Dish, 'findByIdAndUpdate').resolves(updatedDish);
 
