@@ -1,11 +1,11 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   createDish,
   getDishes,
   getDishById,
   updateDish,
   deleteDish,
-} = require('../controllers/dishController');
+} from '../controllers/dishController';
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router.get('/:id', getDishById);
 router.put('/:id', updateDish);
 router.delete('/:id', deleteDish);
 
-module.exports = router;
+export default router;

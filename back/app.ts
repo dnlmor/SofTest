@@ -1,9 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const connectDB = require('./config/database');
-const dishRoutes = require('./routes/dishRoutes');
-const { PORT } = require('./config/config');
+import express, { Request, Response, NextFunction } from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import connectDB from './config/database';
+import dishRoutes from './routes/dishRoutes';
+import PORT from './config/config';
 
 // Connect to MongoDB
 connectDB();
@@ -19,7 +19,7 @@ app.use(cors());
 app.use('/api/dishes', dishRoutes);
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
@@ -29,4 +29,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-module.exports = app;
+export default app;
