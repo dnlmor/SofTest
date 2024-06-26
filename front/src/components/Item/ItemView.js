@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import itemService from '../../services/itemService';
-import './ItemView.css';
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import axios from 'axios';
+import ItemView from '../ItemView';
 
-function ItemView() {
-  const { id } = useParams();
-  const [item, setItem] = useState({});
+jest.mock('axios');
 
-  useEffect(() => {
-    itemService.getItemById(id).then(data => setItem(data));
-  }, [id]);
+test('fetches and displays item details', async () => {
+  const item = { _id: '1', name: 'Item 1', description: 'Description 1', price: '10' };
+  axios.get.mockResolvedValue({ data: item });
 
-  return (
-    <div className="item-view">
-      <h1>{item.name}</h1>
-      <p>{item.description}</p>
-      <p>Price: ${item.price}</p>
-    </div>
-  );
-}
+  render(<ItemView match={{ params: { id: '1' } }} />);
 
-export default ItemView;
+  expect(screen.getByText(/loading/i)).toBeInTheDocument();
+
+  await waitFor(() => expect(screen.getByText('Item 1')).toBeInTheDocument());
+  expect(screen.getByText('Description 1')).toBeInTheDocument();
+  expect(screen.getByText('10')).toBeInTheDocument();
+});

@@ -1,64 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import itemService from '../../services/itemService';
-import './ItemEdit.css';
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import axios from 'axios';
+import ItemEdit from '../ItemEdit';
 
-function ItemEdit() {
-  const { id } = useParams();
-  const [item, setItem] = useState({});
-  const navigate = useNavigate();
+jest.mock('axios');
 
-  useEffect(() => {
-    const fetchItem = async () => {
-      try {
-        const fetchedItem = await itemService.getItemById(id);
-        setItem(fetchedItem);
-      } catch (error) {
-        console.error('Error fetching item:', error);
-      }
-    };
+test('submits form and updates item', async () => {
+  const fetchItems = jest.fn();
+  const item = { _id: '1', name: 'Item 1', description: 'Description 1', price: '10' };
+  axios.put.mockResolvedValue({});
 
-    fetchItem();
-  }, [id]);
+  render(<ItemEdit item={item} fetchItems={fetchItems} />);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    try {
-      await itemService.updateItem(id, item);
-      navigate('/');
-    } catch (error) {
-      console.error('Error updating item:', error);
-    }
-  };
+  fireEvent.change(screen.getByPlaceholderText(/name/i), {
+    target: { value: 'Updated Item 1' },
+  });
+  fireEvent.change(screen.getByPlaceholderText(/description/i), {
+    target: { value: 'Updated Description 1' },
+  });
+  fireEvent.change(screen.getByPlaceholderText(/price/i), {
+    target: { value: '20' },
+  });
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setItem(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  fireEvent.click(screen.getByText(/update item/i));
 
-  return (
-    <div className="item-edit"> 
-      <h1>Edit Item</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" value={item.name} onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Description:</label>
-          <input type="text" id="description" name="description" value={item.description} onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="price">Price:</label>
-          <input type="text" id="price" name="price" value={item.price} onChange={handleChange} />
-        </div>
-        <button className="update-button" type="submit">Update</button>
-      </form>
-    </div>
-  );
-}
+  expect(axios.put).toHaveBeenCalledWith(`/api/items/${item._id}`, {
+    name: 'Updated Item 1',
+    description: 'Updated Description 1',
+    price: '20',
+  });
 
-export default ItemEdit;
+  expect(fetchItems).toHaveBeenCalled();
+});
