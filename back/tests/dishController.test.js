@@ -39,12 +39,12 @@ describe('Dish Controller', () => {
         json: sinon.stub(),
       };
       const error = new Error('Error creating dish');
-
+    
       sandbox.stub(Dish.prototype, 'save').rejects(error);
-
+    
       await dishController.createDish(req, res);
-
-      expect(res.status.calledWith(400)).to.be.true;
+    
+      expect(res.status.calledWith(500)).to.be.true;
       expect(res.json.calledWith({ message: error.message })).to.be.true;
     });
   });

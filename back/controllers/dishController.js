@@ -3,10 +3,10 @@ const Dish = require('../models/dishModel');
 exports.createDish = async (req, res) => {
   try {
     const dish = new Dish(req.body);
-    await dish.save();
-    res.status(201).json(dish);
+    const savedDish = await dish.save();
+    res.status(201).json(savedDish);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
