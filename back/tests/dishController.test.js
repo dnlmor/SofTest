@@ -15,7 +15,7 @@ describe('Dish Controller', () => {
   describe('createDish', () => {
     it('should create a new dish', async () => {
       const req = {
-        body: { name: 'Pasta', price: 10.99, ingredients: ['Pasta', 'Sauce'] },
+        body: { name: 'Ramen', price: 39.99, ingredients: ['Noodle', 'Beef', 'Boiled Eggs'] },
       };
       const res = {
         status: sinon.stub().returnsThis(),
@@ -32,7 +32,7 @@ describe('Dish Controller', () => {
 
     it('should handle errors when creating a dish', async () => {
       const req = {
-        body: { name: 'Pasta', price: 10.99, ingredients: ['Pasta', 'Sauce'] },
+        body: { name: 'Ramen', price: 39.99, ingredients: ['Noodle', 'Beef', 'Boiled Eggs'] },
       };
       const res = {
         status: sinon.stub().returnsThis(),
@@ -56,7 +56,7 @@ describe('Dish Controller', () => {
         status: sinon.stub().returnsThis(),
         json: sinon.stub(),
       };
-      const dishes = [{ name: 'Pasta', price: 10.99, ingredients: ['Pasta', 'Sauce'] }];
+      const dishes = [{ name: 'Ramen', price: 39.99, ingredients: ['Noodle', 'Beef', 'Boiled Eggs'] }];
 
       sandbox.stub(Dish, 'find').resolves(dishes);
 
@@ -90,7 +90,7 @@ describe('Dish Controller', () => {
         status: sinon.stub().returnsThis(),
         json: sinon.stub(),
       };
-      const dish = { name: 'Pasta', price: 10.99, ingredients: ['Pasta', 'Sauce'] };
+      const dish = { name: 'Ramen', price: 39.99, ingredients: ['Noodle', 'Beef', 'Boiled Eggs'] };
 
       sandbox.stub(Dish, 'findById').resolves(dish);
 
@@ -139,7 +139,7 @@ describe('Dish Controller', () => {
         status: sinon.stub().returnsThis(),
         json: sinon.stub(),
       };
-      const updatedDish = { name: 'Pasta', price: 12.99, ingredients: ['Pasta', 'Sauce'] };
+      const updatedDish = { name: 'Ramen', price: 49.99, ingredients: ['Noodle', 'Chicken', 'Boiled Eggs'] };
 
       sandbox.stub(Dish, 'findByIdAndUpdate').resolves(updatedDish);
 
